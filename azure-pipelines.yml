@@ -6,14 +6,25 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  host: cdpartsun2-dev.azurewebsites.net
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+jobs:
+- job: jmeter
+  pool:
+    vmImage: ubuntu-latest
+  displayName: Run JMeter tests
+  steps:
+  - task: Bash@3
+    displayName: Execute JMeter tests
+    inputs:
+      targetType: filePath
+      filePath: 'jmeter/test.sh'
+      arguments: '$PWD CartTest.jmx $(host)'
+      workingDirectory: jmeter
+      failOnStderr: true
+  - task: PublishPipelineArtifact@1
+    displayName: Publish JMeter Report
+    inputs:
+      targetPath: jmeter/report
+      artifact: jmeter
