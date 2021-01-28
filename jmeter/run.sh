@@ -3,7 +3,7 @@
 # Run JMeter Docker image with options
 
 NAME="jmetertest"
-IMAGE="qainsights/windows-docker-jmeter"
+IMAGE="justb4/jmeter:latest"
 ROOTPATH=$1
 
 echo "$ROOTPATH"
